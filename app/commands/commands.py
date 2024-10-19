@@ -44,8 +44,7 @@ async def medibot(ctx):
 
     embed.set_footer(text="🔗 Ghid complet pentru utilizarea Medibot: https://example.com")
 
-    # Optionally, you can set a thumbnail or image if you want to add the bot's logo
-    embed.set_thumbnail(url="https://i.imgur.com/6sGYR0P.png")  # Make sure this URL is valid
+    embed.set_thumbnail(url="https://i.imgur.com/6sGYR0P.png")
 
     await ctx.send(embed=embed)
 
@@ -58,9 +57,8 @@ async def meditatii(ctx):
         await ctx.send("Nu s-a putut conecta la baza de date.")
         return
 
-    server_id = str(ctx.guild.id)  # Get the current server's ID
+    server_id = str(ctx.guild.id)
 
-    # Fetch meditations for the current server
     query = 'SELECT id, materie, data FROM meditatii WHERE server_id = %s ORDER BY data'
     conn = None
     rows = []
@@ -78,19 +76,16 @@ async def meditatii(ctx):
         if conn:
             ctx.bot.db_pool.putconn(conn)
 
-    # If no meditations, notify the user
     if not rows:
         await ctx.send("Nu există meditații pentru acest server.")
         return
 
-    # Prepare the table content
     today = date.today()
     message_lines = ["📅 **Lista Meditațiilor:**"]
 
     for med_id, materie, data_meditatie in rows:
         data_meditatie = datetime.strptime(str(data_meditatie), '%Y-%m-%d').date()
 
-        # Determine the status
         if data_meditatie < today:
             status = "✅ Finalizată"
         elif data_meditatie == today:
@@ -99,14 +94,11 @@ async def meditatii(ctx):
             days_left = (data_meditatie - today).days
             status = f"⏳ În {days_left} zile"
 
-        # Format row
         line = f"**#{med_id}** - *{materie}* - **{data_meditatie.strftime('%d/%m/%Y')}** - {status}"
         message_lines.append(line)
 
-    # Combine all rows into a single message
     message = "\n".join(message_lines)
 
-    # Send the result
     await ctx.send(message)
 
 
@@ -116,14 +108,12 @@ async def meditatie(ctx, action: str = None, *args):
         await ctx.send("Nu s-a putut conecta la baza de date.")
         return
 
-    # Ensure action is specified
     if action not in ["add", "delete"]:
         await ctx.send("Te rog să specifici o acțiune validă: `add` sau `delete`.")
         return
 
-    server_id = str(ctx.guild.id)  # Get the current server's ID
+    server_id = str(ctx.guild.id) 
 
-    # Handle "add" action
     if action == "add":
         if len(args) < 1:
             await ctx.send("Te rog să specifici materia pentru meditație.")
@@ -134,7 +124,6 @@ async def meditatie(ctx, action: str = None, *args):
 
         insert_query = 'INSERT INTO meditatii (materie, data, server_id) VALUES (%s, %s, %s)'
         
-        # Insert the meditation into the database
         conn = None
         try:
             conn = ctx.bot.db_pool.getconn()
@@ -150,7 +139,6 @@ async def meditatie(ctx, action: str = None, *args):
             if conn:
                 ctx.bot.db_pool.putconn(conn)
 
-    # Handle "delete" action
     elif action == "delete":
         if len(args) < 1:
             await ctx.send("Te rog să specifici ID-ul meditației pe care dorești să o ștergi.")
@@ -164,7 +152,6 @@ async def meditatie(ctx, action: str = None, *args):
 
         delete_query = 'DELETE FROM meditatii WHERE id = %s AND server_id = %s'
         
-        # Delete the meditation from the database
         conn = None
         try:
             conn = ctx.bot.db_pool.getconn()
