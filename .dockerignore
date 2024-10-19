@@ -1,6 +1,7 @@
 __pycache__/
 *.pyc
 *.pyo
+/app/**/__pycache__/
 
 .git/
 .gitignore
