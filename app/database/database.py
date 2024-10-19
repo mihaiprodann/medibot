@@ -36,7 +36,8 @@ def create_tables(db_pool):
         CREATE TABLE IF NOT EXISTS meditatii (
             id SERIAL PRIMARY KEY,
             materie VARCHAR(255),
-            data DATE
+            data DATE,
+            server_id VARCHAR(255)
         )
     '''
     execute_query(db_pool, create_table_query, ())

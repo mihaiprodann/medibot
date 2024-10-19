@@ -3,7 +3,7 @@ import os
 from discord.ext import commands
 import discord
 from dotenv import load_dotenv
-from commands.commands import medibot, meditatie
+import commands.commands as bot_commands
 from database.database import init_db, create_tables
 
 logging.basicConfig(level=logging.INFO)
@@ -23,7 +23,8 @@ async def on_ready():
     if bot.db_pool:
         create_tables(bot.db_pool)
 
-bot.add_command(meditatie)
-bot.add_command(medibot)
+bot.add_command(bot_commands.medibot)
+bot.add_command(bot_commands.meditatie)
+bot.add_command(bot_commands.meditatii)
 
 bot.run(token)
