@@ -1,4 +1,18 @@
-# flyctl launch added from .gitignore
-**\.env
-**\app\.env
+# Ignore environment files
+.env
+app/.env
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore Git-related files
+.git/
+.gitignore
+
+# Ignore Fly.io configuration file from Docker image
 fly.toml
+
+# Ignore editor-specific files
+.vscode/
