@@ -1,14 +1,10 @@
-# Ignore Python cache files
 __pycache__/
 *.pyc
 *.pyo
 
-# Ignore Git-related files
 .git/
 .gitignore
 
-# Ignore Fly.io configuration file from Docker image
 fly.toml
 
-# Ignore editor-specific files
 .vscode/
