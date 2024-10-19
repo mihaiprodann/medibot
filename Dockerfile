@@ -11,8 +11,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiază toate fișierele din directorul `app` în container
 COPY app/ .
 
-# Expune portul necesar (Fly.io va redirecționa automat traficul către portul specificat în `fly.toml`)
-EXPOSE 8080
+# Copiază fișierul .env în directorul de lucru al containerului
+COPY .env .env
 
 # Rulează scriptul principal
 CMD ["python", "main.py"]
